@@ -96,7 +96,10 @@ sub retrieveTree($)                                                             
   my $d = Nasm::X86::BlockMultiWayTree::DescribeBlockMultiWayTree               # Descriptor for the tree representing the new branch
    ($y->byteString, $data);
 
-  describe($y->byteString, $d);                                                 # Descriptor for the retrieved branch
+  my $D = describe($y->byteString, $d);                                         # Descriptor for the retrieved branch
+     $D->result = $found;
+     $D->data   = $data;
+  $D
  }
 
 #d
@@ -223,17 +226,19 @@ latest:;
 if (1) {
   my $y = new;
   my $b = $y->locateOrCreateBranch(Vq(key,  2));
-     $b->assignScalarD            (Vq(data, 4));
+     $b->assignScalarD            (Vq(data, 44));
 
   my $a = $y->locateOrCreateBranch(Vq(key,  1));
      $a->assignTree($b);
 
   my $c = $y->locateOrCreateBranch(Vq(key,  1));
   my $d = $c->retrieveTree($c);
-  my $e = $d->locateOrCreateBranch(Vq(key,  2));
-#  $e->outNL;
-
+  my $e = $d->retrieveScalarD     (Vq(key,  2));
+     $e->result->outNL;
+     $e->data  ->outNL;
   ok Assemble(debug => 0, eq => <<END);
+found: 0000 0000 0000 0001
+data: 0000 0000 0000 002C
 END
  }
 
