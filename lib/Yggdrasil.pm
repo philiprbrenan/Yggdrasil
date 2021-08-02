@@ -242,7 +242,7 @@ data: 0000 0000 0000 002C
 END
  }
 
-ok 1 for 2..99;
+ok 1 for 4..99;
 
 unlink $_ for qw(hash print2 sde-log.txt sde-ptr-check.out.txt z.txt);          # Remove incidental files
 
